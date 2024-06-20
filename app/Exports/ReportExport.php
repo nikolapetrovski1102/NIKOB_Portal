@@ -15,6 +15,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use SaintSystems\OData\ODataClient;
+use Illuminate\Support\Carbon;
 
 
 class ReportExport implements FromView, WithStyles, ShouldAutoSize
@@ -35,9 +36,9 @@ class ReportExport implements FromView, WithStyles, ShouldAutoSize
 
     public function view(): View
     {
-        $yesterday = date("Y-m-d", strtotime( '-1 days' ) );
-        $transactions = Transactions::whereDate('created_at', $yesterday )->where('status', 'approved')->get();
-
+        $today = Carbon::now()->format('Y-m-d');
+        $transactions = Transactions::whereDate('created_at', $today)->where('status', 'approved')->get();
+    
         foreach($transactions as $transaction) {
             foreach($transaction->invoices()->get()->toArray() as $invoice) {
                 $transaction['invoices'] = $transaction->invoices()->get()->toArray();

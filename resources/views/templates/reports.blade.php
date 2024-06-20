@@ -5,7 +5,7 @@
         <tr></tr>
         <tr>
             <td></td>
-            <td colspan="2">ДАТУМ НА УПЛАТА: {{ \Carbon\Carbon::yesterday()->format('d.m.Y') }}</td>
+            <td colspan="2">ДАТУМ НА УПЛАТА: {{ \Carbon\Carbon::now()->format('d.m.Y') }}</td>
         </tr>
         <tr></tr>
         <tr>
@@ -36,7 +36,7 @@
             </td>
             <td><br>{{implode(', ', $invoices)}}</td>
             <td><br>{{ number_format($transaction['amount'], 2)  }} ден</td>
-            <td><br>{{ \Carbon\Carbon::parse($transaction['created_at'])->format('d-m-Y H:i:s')}}</td>
+            <td><br>{{ \Carbon\Carbon::parse($transaction['created_at'])->addHours(1)->format('d-m-Y H:i:s')}}</td>
             <td></td>
         </tr>
         @endforeach

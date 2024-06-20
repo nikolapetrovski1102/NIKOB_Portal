@@ -38,13 +38,9 @@ class PayController extends Controller
                 $total += $res[0]['AmountCur'];
         }
 
-        date_default_timezone_set('Europe/Skopje');
-        $currentDateTime = date('Y-m-d H:i:s');
-
         $TID = Transactions::create([
             'transaction_id' => null,
             'amount' => $total,
-            'created_at' => $currentDateTime,
             'notify' => Auth::user()->email,
             'user_id' => Auth::user()->id,
             'logs' => '[]',

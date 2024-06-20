@@ -32,7 +32,7 @@
                                 @if($invoice['AmountCur'] > 0)
                                     <tr>
                                         <td class="select-invoice">
-                                            <input type="checkbox" class="pay_invoice"  name="invoice_id[]" <?php echo (isset($invoice['lastTransaction']) && in_array($invoice['lastTransaction']['status'], [ 'approved'])) ? 'disabled':'';?> data="{{ $invoice['AmountCur']  }}"/>
+                                            <input type="checkbox" class="pay_invoice" name="invoice_id[]" <?php echo (isset($invoice['lastTransaction']) && in_array($invoice['lastTransaction']['status'], [ 'approved'])) ? 'disabled':'';?> data="{{ $invoice['AmountCur']  }}"/>
                                             @if(isset($invoice['lastTransaction']))
                                                 @switch($invoice['lastTransaction']['status'])
                                                     @case('approved')
@@ -47,11 +47,9 @@
                                                 @endswitch
                                             @endif
                                         </td>
-                                        <td></td>
                                         <td>{{ $invoice['AccountNum']  }}</td>
                                         <td>{{ \Carbon\Carbon::parse($invoice['TransDate'])->format('d-m-Y')}}</td>
                                         <td>{{ \Carbon\Carbon::parse($invoice['DueDate'])->format('d-m-Y')}}</td>
-                                        
                                         <td>{{ number_format($invoice['AmountCur'], 2)  }}</td>
                                     </tr>
                                 @endif

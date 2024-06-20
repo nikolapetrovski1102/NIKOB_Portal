@@ -3,6 +3,7 @@
 namespace SaintSystems\OData;
 
 use GuzzleHttp\Client;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Replace;
 
 class GuzzleHttpProvider implements IHttpProvider
 {
@@ -86,7 +87,7 @@ class GuzzleHttpProvider implements IHttpProvider
 
         $result = $this->http->request(
             $request->method,
-            $request->requestUri,
+            str_replace('$', '', $request->requestUri),
             $options
         );
 

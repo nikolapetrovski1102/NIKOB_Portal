@@ -30,16 +30,18 @@ class CreateReport extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public static function handle()
     {
-        Mail::send(['html'=>'email_templates.reports'], [], function($message) {
-            $to = explode(',', env('REPORT_EMAILS'));
+        $status = Mail::send(['html'=>'email_templates.reports'], [], function($message) {
+            //$to = explode(',', env('REPORT_EMAILS'));
             $excelFile = Excel::raw(new ReportExport(), BaseExcel::XLSX);
-            $message->to($to);
-            $message->from('no-replay@nikob.com.mk', env("APP_NAME"));
+            $message->to('npetrovski@ohanaone.mk');
+            $message->from('npetrovski@ohanaone.mk');
             $message->subject('ИЗВЕШТАЈ ЗА ПЛАТЕНИ СМЕТКИ');
             $message->attachData($excelFile, 'ИЗВЕШТАЈ - '.date('d M Y').'.xlsx');
-       
        });
+       $mailStatus = $status ? "Mail sent successfully." : "Failed to send mail.";
+
+       return $mailStatus;
     }
 }

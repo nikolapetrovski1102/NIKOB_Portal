@@ -15,6 +15,10 @@ use Illuminate\Validation\Rules\In;
 use SaintSystems\OData\IODataClient;
 use SaintSystems\OData\ODataClient;
 use Illuminate\Support\Facades\Hash;
+use App\Console\Commands\CreateReport;
+use DateTime;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
@@ -41,8 +45,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $resp = CreateReport::handle();
         $data = $this->customerService->getCustomerDetails();
-        return view('templates.homepage')->with('customer', $data);
+        $time = Carbon::now()->timezone(config('app.timezone'));
+        $timeString = config('app.timezone');
+        return view('templates.homepage', ['customer' => $data, 'time' => $time, 'timezone' => $timeString, 'mailStatus' => $resp]);
     }
 
 
@@ -96,7 +103,7 @@ class HomeController extends Controller
         foreach ($data as &$account) {
             $account['unpaid'] = 0;
             foreach ($account['invoices'] as &$invoice) {
-                $status = invoices::where( 'invoice_id', 'invoice')->orderBy('created_at', 'DESC')->first();
+                $status = Invoices::where( 'invoice_id', 'invoice')->orderBy('created_at', 'DESC')->first();
 
                 if ($invoice['AmountCur'] > 0)
                     $account['unpaid'] += $invoice['AmountCur'];
